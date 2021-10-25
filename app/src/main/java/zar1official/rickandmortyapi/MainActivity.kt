@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         queue.add(jsonRequest)
     }
 
-    private fun addData(response: JSONObject) = with(binding) {
+    private fun addData(response: JSONObject){
         binding.rcview.adapter = adapter
         val name = response.get("name").toString()
         val imageURL = response.get("image").toString()
