@@ -12,8 +12,13 @@ import org.json.JSONObject
 import zar1official.rickandmortyapi.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+
+    companion object {
+        const val URL = "https://rickandmortyapi.com/api/character"
+    }
+
     lateinit var binding: ActivityMainBinding
-    private var adapter= CustomAdapter()
+    private var adapter = CustomAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,9 +30,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun getJsonData() {
         val queue = Volley.newRequestQueue(this)
-        val url = "https://rickandmortyapi.com/api/character"
         val jsonRequest = JsonObjectRequest(
-            Request.Method.GET, url, null,
+            Request.Method.GET, URL, null,
             { response ->
                 val jsonArray: JSONArray = response.getJSONArray("results")
                 for (i in 0 until jsonArray.length()) {
@@ -39,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         queue.add(jsonRequest)
     }
 
-    private fun addData(response: JSONObject)  = with(binding){
+    private fun addData(response: JSONObject) = with(binding) {
         binding.rcview.adapter = adapter
         val name = response.get("name").toString()
         val imageURL = response.get("image").toString()
