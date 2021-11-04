@@ -1,8 +1,9 @@
 package zar1official.rickandmortyapi
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
@@ -37,10 +38,12 @@ class MainActivity : AppCompatActivity() {
                 for (i in 0 until jsonArray.length()) {
                     addData(jsonArray.getJSONObject(i))
                 }
+                binding.progressBar.visibility = View.GONE
             },
             { Toast.makeText(this, "Ошибка!", Toast.LENGTH_LONG).show() })
 
         queue.add(jsonRequest)
+
     }
 
     private fun addData(response: JSONObject){
