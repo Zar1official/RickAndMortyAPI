@@ -2,12 +2,12 @@ package zar1official.rickandmortyapi
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.snackbar.Snackbar
 import org.json.JSONArray
 import org.json.JSONObject
 import zar1official.rickandmortyapi.databinding.ActivityMainBinding
@@ -40,16 +40,28 @@ class MainActivity : AppCompatActivity() {
                 }
                 binding.progressBar.visibility = View.GONE
             },
-            { Toast.makeText(this, "Ошибка!", Toast.LENGTH_LONG).show() })
+            {
+                val snackbar = Snackbar.make(
+                    this,
+                    binding.root,
+                    "Проверьте подключение к интернету",
+                    Snackbar.LENGTH_INDEFINITE
+                )
+                snackbar.setAction("Обновить") {
+                    getJsonData()
+                    snackbar.dismiss()
+                }.show()
+            })
 
         queue.add(jsonRequest)
 
     }
 
-    private fun addData(response: JSONObject){
+    private fun addData(response: JSONObject) {
         binding.rcview.adapter = adapter
         val name = response.get("name").toString()
         val imageURL = response.get("image").toString()
         adapter.addCharacter(CharacterModel(name, imageURL))
     }
+
 }
