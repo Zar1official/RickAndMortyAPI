@@ -3,7 +3,6 @@ package zar1official.rickandmortyapi
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -25,7 +24,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.rcview.layoutManager = LinearLayoutManager(this@MainActivity)
+        binding.rcview.adapter = adapter
+
         getJsonData()
     }
 
@@ -35,9 +35,7 @@ class MainActivity : AppCompatActivity() {
             Request.Method.GET, URL, null,
             { response ->
                 val jsonArray: JSONArray = response.getJSONArray("results")
-                for (i in 0 until jsonArray.length()) {
-                    addData(jsonArray.getJSONObject(i))
-                }
+                addCharacters(jsonArray)
                 binding.progressBar.visibility = View.GONE
             },
             {
@@ -57,11 +55,17 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun addData(response: JSONObject) {
-        binding.rcview.adapter = adapter
-        val name = response.get("name").toString()
-        val imageURL = response.get("image").toString()
-        adapter.addCharacter(CharacterModel(name, imageURL))
+    private fun addCharacters(jsonArray: JSONArray) {
+        for (i in 0 until jsonArray.length()) {
+            val currentCharacter = jsonArray.getJSONObject(i).getCharacter()
+            adapter.addCharacter(currentCharacter)
+        }
+    }
+
+    private fun JSONObject.getCharacter(): CharacterModel {
+        val name = this.get("name").toString()
+        val imageURL = this.get("image").toString()
+        return CharacterModel(name, imageURL)
     }
 
 }

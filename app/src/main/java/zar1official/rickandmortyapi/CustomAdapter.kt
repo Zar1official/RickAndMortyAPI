@@ -1,5 +1,6 @@
 package zar1official.rickandmortyapi
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,8 +30,10 @@ class CustomAdapter : RecyclerView.Adapter<CustomAdapter.CustomHolder>() {
 
     override fun getItemCount(): Int = charactersList.size
 
+    @SuppressLint("NotifyDataSetChanged")
     fun addCharacter(character: CharacterModel) {
         charactersList.add(character)
+        notifyDataSetChanged()
     }
 
 }
