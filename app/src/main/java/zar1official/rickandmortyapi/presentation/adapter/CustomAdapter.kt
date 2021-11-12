@@ -1,4 +1,4 @@
-package zar1official.rickandmortyapi
+package zar1official.rickandmortyapi.presentation.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -6,14 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import zar1official.rickandmortyapi.R
 import zar1official.rickandmortyapi.databinding.ListItemBinding
+import zar1official.rickandmortyapi.domain.Character
 
 class CustomAdapter : RecyclerView.Adapter<CustomAdapter.CustomHolder>() {
-    val charactersList = ArrayList<CharacterModel>()
 
-    class CustomHolder(item: View) : RecyclerView.ViewHolder(item) {
+    private var charactersList =  ArrayList<Character>()
+
+    inner class CustomHolder(item: View) : RecyclerView.ViewHolder(item) {
         val binding = ListItemBinding.bind(item)
-        fun bind(character: CharacterModel) = with(binding) {
+        fun bind(character: Character) = with(binding) {
             Glide.with(root).load(character.imageURL).into(imageview)
             textView.text = character.name
         }
@@ -31,8 +34,8 @@ class CustomAdapter : RecyclerView.Adapter<CustomAdapter.CustomHolder>() {
     override fun getItemCount(): Int = charactersList.size
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addCharacter(character: CharacterModel) {
-        charactersList.add(character)
+    fun updateData(newList: ArrayList<Character>) {
+        charactersList= newList
         notifyDataSetChanged()
     }
 
