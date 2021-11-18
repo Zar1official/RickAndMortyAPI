@@ -14,7 +14,8 @@ import zar1official.rickandmortyapi.domain.Constant.API_URL
 
 class MainViewModel(val app: Application) : AndroidViewModel(app) {
 
-    val data = MutableLiveData<ArrayList<Character>>()
+    val data = MutableLiveData<ArrayList<Character>?>()
+    val filteredData = MutableLiveData<ArrayList<Character>>()
 
     init {
         update()
@@ -35,7 +36,7 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
     }
 
     private fun addCharacters(jsonArray: JSONArray) {
-        val resultList= ArrayList<Character>()
+        val resultList = ArrayList<Character>()
         for (i in 0 until jsonArray.length()) {
             val currentCharacter = jsonArray.getJSONObject(i).getCharacter()
             resultList.add(currentCharacter)
@@ -47,5 +48,14 @@ class MainViewModel(val app: Application) : AndroidViewModel(app) {
         val name = this.get("name").toString()
         val imageURL = this.get("image").toString()
         return Character(name, imageURL)
+    }
+
+    fun filterData(filter: String?) {
+        val resultList = ArrayList<Character>()
+        data.value?.forEach {
+            if (it.name.lowercase().contains(filter!!.lowercase()))
+                resultList.add(it)
+        }
+        filteredData.value = resultList
     }
 }

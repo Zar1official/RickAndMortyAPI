@@ -1,8 +1,10 @@
 package zar1official.rickandmortyapi.presentation.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import zar1official.rickandmortyapi.databinding.ActivityMainBinding
@@ -22,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         binding.rcview.adapter = adapter
         vm = ViewModelProvider(this).get(MainViewModel::class.java)
         vm.data.observe(this) { data ->
+            Log.d("data", "changed")
             if (data != null) {
                 adapter.updateData(data)
                 binding.progressBar.visibility = View.GONE
@@ -38,6 +41,20 @@ class MainActivity : AppCompatActivity() {
                 }.show()
             }
         }
-    }
 
+        vm.filteredData.observe(this) { data ->
+            adapter.updateData(data)
+        }
+
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                vm.filterData(newText)
+                return true
+            }
+        })
+    }
 }

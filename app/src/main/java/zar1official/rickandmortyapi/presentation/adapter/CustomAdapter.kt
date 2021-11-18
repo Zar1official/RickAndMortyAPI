@@ -12,7 +12,7 @@ import zar1official.rickandmortyapi.domain.Character
 
 class CustomAdapter : RecyclerView.Adapter<CustomAdapter.CustomHolder>() {
 
-    private var charactersList =  ArrayList<Character>()
+    private var charactersList = ArrayList<Character>()
 
     inner class CustomHolder(item: View) : RecyclerView.ViewHolder(item) {
         val binding = ListItemBinding.bind(item)
@@ -35,7 +35,7 @@ class CustomAdapter : RecyclerView.Adapter<CustomAdapter.CustomHolder>() {
 
     @SuppressLint("NotifyDataSetChanged")
     fun updateData(newList: ArrayList<Character>) {
-        charactersList= newList
+        charactersList = newList
         notifyDataSetChanged()
     }
 
